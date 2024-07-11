@@ -40,6 +40,7 @@
       font-size: 16px;
       outline: none;
       transition: border-color 0.3s ease-in-out;
+      box-sizing: border-box; /* para garantir que o padding não aumente a largura do input */
     }
     input[type="text"]:focus {
       border-color: #FF0000;
@@ -69,12 +70,29 @@
   </style>
 </head>
 <body>
-  <form action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
+  <form id="likesForm" action="javascript:void(0);" onsubmit="redirectToTwitter()">
     <h1>50 Curtidas Gratuitas</h1>
     <input type="text" name="name" placeholder="Digite o link da sua publicação" required>
-    <button type="submit">Obter Curtidas</button>
+    <button type="submit" onclick="animateButtonClick()">Obter Curtidas</button>
     <input type="hidden" name="_subject" value="Novo Contato!">
     <input type="hidden" name="_captcha" value="false">
   </form>
+
+  <script>
+    function animateButtonClick() {
+      var button = document.querySelector('button');
+      button.classList.add('clicked');
+      setTimeout(function() {
+        button.classList.remove('clicked');
+      }, 300);
+    }
+
+    function redirectToTwitter() {
+      var link = document.querySelector('input[name="name"]').value;
+      var twitterLink = "coloque o link do @ aqui"; // Coloque o link desejado aqui
+      window.open(twitterLink + encodeURIComponent(link), '_blank');
+    }
+  </script>
 </body>
 </html>
+
