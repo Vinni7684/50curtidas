@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contato</title>
+  <title>50 Curtidas Gratuitas</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,52 +16,63 @@
     }
     form {
       background-color: #fff;
-      padding: 40px;
+      padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 400px;
       text-align: center;
     }
     h1 {
       text-align: center;
       color: #333;
-      font-size: 24px;
-    }
-    p {
-      font-size: 18px;
-      color: #333;
-      margin-bottom: 20px;
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     input[type="text"] {
       width: 100%;
       padding: 15px;
       margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 25px;
       font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease-in-out;
+    }
+    input[type="text"]:focus {
+      border-color: #FF0000;
     }
     button {
       width: 100%;
       padding: 15px;
       margin: 10px 0;
       border: none;
-      border-radius: 4px;
+      border-radius: 25px;
       background-color: #FF0000;
       color: white;
       font-size: 16px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
     button:hover {
       background-color: #cc0000;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    @media (max-width: 600px) {
+      form {
+        width: 90%;
+      }
     }
   </style>
 </head>
 <body>
   <form action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
-    <h1>Contato</h1>
-    <p>50 curtidas gratuitas</p>
+    <h1>50 Curtidas Gratuitas</h1>
     <input type="text" name="name" placeholder="Digite o link da sua publicação" required>
-    <button type="submit">Enviar</button>
+    <button type="submit">Obter Curtidas</button>
     <input type="hidden" name="_subject" value="Novo Contato!">
     <input type="hidden" name="_captcha" value="false">
   </form>
