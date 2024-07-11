@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Nome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 300px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form id="nomeForm" action="send_email.php" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+        <button type="submit">Enviar</button>
+        <div id="mensagem" class="message"></div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('nomeForm').addEventListener('submit', function(event) {
+        var nome = document.getElementById('nome').value;
+        var mensagem = document.getElementById('mensagem');
+        
+        if (nome === "") {
+            event.preventDefault(); // Impede o envio do formulário
+            mensagem.textContent = "Por favor, digite um nome.";
+        } else {
+            mensagem.textContent = "";
+        }
+    });
+</script>
+
+</body>
+</html>
