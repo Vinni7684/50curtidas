@@ -62,6 +62,14 @@
       background-color: #cc0000;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
+    .disabled {
+      background-color: #ccc !important;
+      cursor: not-allowed;
+    }
+    .count {
+      font-size: 18px;
+      margin-top: 10px;
+    }
     @media (max-width: 600px) {
       form {
         width: 90%;
@@ -70,29 +78,49 @@
   </style>
 </head>
 <body>
-  <form id="likesForm" action="javascript:void(0);" onsubmit="redirectToTwitter()">
+  <form id="likesForm" action="javascript:void(0);">
     <h1>50 Curtidas Gratuitas</h1>
-    <input type="text" name="name" placeholder="Digite o link da sua publicação" required>
-    <button type="submit" onclick="animateButtonClick()">Obter Curtidas</button>
-    <input type="hidden" name="_subject" value="Novo Contato!">
-    <input type="hidden" name="_captcha" value="false">
+    <input type="text" id="linkInput" placeholder="Digite o link da sua publicação" required>
+    <button type="button" id="submitButton" onclick="countClicks()">Obter Curtidas</button>
+    <div class="count">Total de Curtidas: <span id="clickCount">0</span></div>
   </form>
 
   <script>
-    function animateButtonClick() {
-      var button = document.querySelector('button');
-      button.classList.add('clicked');
-      setTimeout(function() {
-        button.classList.remove('clicked');
-      }, 300);
+    // Função para contar os cliques
+    function countClicks() {
+      var count = localStorage.getItem('clickCount');
+      if (!count) {
+        count = 0;
+      } else {
+        count = parseInt(count);
+      }
+
+      if (count < 100) {
+        count++;
+        localStorage.setItem('clickCount', count);
+        document.getElementById('clickCount').textContent = count;
+
+        // Redirecionar ou executar ação desejada aqui
+        var linkInput = document.getElementById('linkInput').value;
+        var twitterLink = "https://twitter.com/intent/tweet?url="; // Coloque o link de tweet desejado aqui
+        window.open(twitterLink + encodeURIComponent(linkInput), '_blank');
+      } else {
+        document.getElementById('submitButton').classList.add('disabled');
+        document.getElementById('submitButton').setAttribute('disabled', true);
+      }
     }
 
-    function redirectToTwitter() {
-      var link = document.querySelector('input[name="name"]').value;
-      var twitterLink = "coloque o link do @ aqui"; // Coloque o link desejado aqui
-      window.open(twitterLink + encodeURIComponent(link), '_blank');
-    }
+    // Inicialização da contagem
+    window.onload = function() {
+      var count = localStorage.getItem('clickCount');
+      if (count) {
+        document.getElementById('clickCount').textContent = count;
+        if (parseInt(count) >= 100) {
+          document.getElementById('submitButton').classList.add('disabled');
+          document.getElementById('submitButton').setAttribute('disabled', true);
+        }
+      }
+    };
   </script>
 </body>
 </html>
-
