@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Configurar Redirecionamento</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <form id="adminForm">
+    <h1>Configurar Redirecionamento</h1>
+    <input type="text" id="redirectUrl" placeholder="Digite o URL de redirecionamento">
+    <button type="button" onclick="saveRedirectUrl()">Salvar</button>
+  </form>
+
+  <script>
+    function saveRedirectUrl() {
+      var redirectUrl = document.getElementById('redirectUrl').value;
+      localStorage.setItem('nextUrl', redirectUrl);
+      alert('URL de redirecionamento salvo com sucesso!');
+    }
+
+    window.onload = function() {
+      var storedUrl = localStorage.getItem('nextUrl');
+      if (storedUrl) {
+        document.getElementById('redirectUrl').value = storedUrl;
+      }
+    };
+  </script>
+</body>
+</html>
