@@ -77,25 +77,6 @@ button.disabled {
   cursor: not-allowed;
 }
 
-.admin-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  padding: 15px 30px;
-  margin-top: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.admin-button:hover {
-  background-color: #45a049;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  transform: scale(1.05);
-}
-
 .progress-bar-container {
   width: 100%;
   background-color: #e0e0e0;
@@ -121,10 +102,5 @@ button.disabled {
 @media (max-width: 600px) {
   form {
     width: 90%;
-  }
-
-  .admin-button {
-    width: 90%;
-    padding: 15px;
   }
 }
