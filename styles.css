@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f2f2f2;
+  background-color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@ form {
   background-color: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(255, 255, 153, 0.4);
   width: 80%;
   max-width: 400px;
   text-align: center;
@@ -23,7 +23,7 @@ form {
 
 form:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 24px rgba(255, 255, 153, 0.6);
 }
 
 h1 {
@@ -58,17 +58,17 @@ button {
   margin: 10px 0;
   border: none;
   border-radius: 25px;
-  background-color: #FF0000;
+  background-color: #0080FF;
   color: white;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 255, 0.1);
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 button:hover {
-  background-color: #cc0000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #005CB2;
+  box-shadow: 0 6px 12px rgba(0, 0, 255, 0.15);
   transform: scale(1.05);
 }
 
@@ -88,7 +88,7 @@ button.disabled {
 
 .progress-bar {
   height: 20px;
-  background-color: #FF0000;
+  background-color: #0080FF;
   width: 0;
   transition: width 0.5s ease-in-out;
 }
