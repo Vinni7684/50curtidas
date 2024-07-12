@@ -1,31 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Configurar Redirecionamento</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Configuração de Administração</title>
 </head>
 <body>
-  <form id="adminForm">
-    <h1>Configurar Redirecionamento</h1>
-    <input type="text" id="redirectUrl" placeholder="Digite o URL de redirecionamento">
-    <button type="button" onclick="saveRedirectUrl()">Salvar</button>
-  </form>
-
+  <h1>Configuração de Administração</h1>
+  
+  <label for="clickCountInput">Contagem de Cliques:</label>
+  <input type="number" id="clickCountInput" min="0" value="0">
+  <button onclick="updateClickCount()">Atualizar Contagem</button>
+  
+  <br><br>
+  
+  <label for="redirectUrlInput">URL de Redirecionamento:</label>
+  <input type="text" id="redirectUrlInput" placeholder="Digite o URL de redirecionamento">
+  <button onclick="updateRedirectUrl()">Atualizar Redirecionamento</button>
+  
   <script>
-    function saveRedirectUrl() {
-      var redirectUrl = document.getElementById('redirectUrl').value;
-      localStorage.setItem('nextUrl', redirectUrl);
-      alert('URL de redirecionamento salvo com sucesso!');
+    // Função para atualizar a contagem de cliques
+    function updateClickCount() {
+      var count = document.getElementById('clickCountInput').value;
+      localStorage.setItem('clickCount', count);
+      alert('Contagem de cliques atualizada para: ' + count);
     }
 
-    window.onload = function() {
-      var storedUrl = localStorage.getItem('nextUrl');
-      if (storedUrl) {
-        document.getElementById('redirectUrl').value = storedUrl;
-      }
-    };
+    // Função para atualizar o URL de redirecionamento
+    function updateRedirectUrl() {
+      var redirectUrl = document.getElementById('redirectUrlInput').value;
+      localStorage.setItem('nextUrl', redirectUrl);
+      alert('URL de redirecionamento atualizado para: ' + redirectUrl);
+    }
   </script>
 </body>
 </html>
