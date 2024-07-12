@@ -8,24 +8,11 @@
 <body>
   <h1>Configuração de Administração</h1>
   
-  <label for="clickCountInput">Contagem de Cliques:</label>
-  <input type="number" id="clickCountInput" min="0" value="0">
-  <button onclick="updateClickCount()">Atualizar Contagem</button>
-  
-  <br><br>
-  
   <label for="redirectUrlInput">URL de Redirecionamento:</label>
   <input type="text" id="redirectUrlInput" placeholder="Digite o URL de redirecionamento">
   <button onclick="updateRedirectUrl()">Atualizar Redirecionamento</button>
   
   <script>
-    // Função para atualizar a contagem de cliques
-    function updateClickCount() {
-      var count = document.getElementById('clickCountInput').value;
-      localStorage.setItem('clickCount', count);
-      alert('Contagem de cliques atualizada para: ' + count);
-    }
-
     // Função para atualizar o URL de redirecionamento
     function updateRedirectUrl() {
       var redirectUrl = document.getElementById('redirectUrlInput').value;
