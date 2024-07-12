@@ -21,6 +21,7 @@
   </form>
 
   <script>
+    // Função para contar cliques e atualizar a barra de progresso
     function countClicks() {
       var count = localStorage.getItem('clickCount');
       if (!count) {
@@ -49,6 +50,7 @@
       }
     }
 
+    // Função para atualizar a barra de progresso
     function updateProgressBar(count) {
       var progressBar = document.getElementById('progressBar');
       var percentage = (count / 100) * 100;
@@ -56,6 +58,7 @@
       document.getElementById('clickCount').textContent = count;
     }
 
+    // Carregar configurações ao carregar a página
     window.onload = function() {
       var count = localStorage.getItem('clickCount');
       if (count) {
