@@ -20,7 +20,7 @@
     <div class="count">Total de Curtidas: <span id="clickCount">0</span> de 100</div>
   </form>
 
-  <button onclick="location.href='admin.html'" class="admin-button">Configurar Redirecionamento</button>
+  <button onclick="promptPassword()" class="admin-button">Admin</button>
 
   <script>
     function countClicks() {
@@ -58,6 +58,15 @@
       var percentage = (count / 100) * 100;
       progressBar.style.width = percentage + '%';
       document.getElementById('clickCount').textContent = count;
+    }
+
+    function promptPassword() {
+      var password = prompt('Digite a senha de administração:');
+      if (password === '1067') {
+        location.href = 'admin.html';
+      } else {
+        alert('Senha incorreta.');
+      }
     }
 
     window.onload = function() {
