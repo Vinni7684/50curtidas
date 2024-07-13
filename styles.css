@@ -1,6 +1,6 @@
 /* Estilos globais */
 body {
-  background-color: #f3f4f7;
+  background-color: #ffffff; /* Fundo branco */
   color: #333;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   display: flex;
@@ -17,7 +17,8 @@ body {
 /* Título */
 .title {
   font-size: 36px;
-  color: #ff4d4d;
+  color: #000000; /* Cor preta */
+  font-weight: bold; /* Fonte mais grossa */
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 20px;
@@ -26,8 +27,8 @@ body {
 
 /* Estilos do formulário */
 form {
-  background-color: #fff;
-  padding: 30px;
+  background-color: #f8f9fa;
+  padding: 20px; /* Reduzido o padding nas laterais */
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -58,7 +59,7 @@ input[type="text"]:focus {
 
 /* Estilos dos botões */
 button {
-  background-color: #ff4d4d;
+  background-color: #d9534f; /* Vermelho forte */
   color: white;
   border: none;
   padding: 12px 20px;
@@ -71,7 +72,7 @@ button {
 }
 
 button:hover {
-  background-color: #ff3333;
+  background-color: #c9302c;
 }
 
 /* Estilos do botão de admin */
@@ -120,7 +121,7 @@ button.admin-button:hover {
   }
 
   form {
-    padding: 20px;
+    padding: 15px;
   }
 
   button {
