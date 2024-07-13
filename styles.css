@@ -1,6 +1,6 @@
 /* Estilos globais */
 body {
-  background-color: #f0f0f0; /* Cor de fundo mais suave */
+  background-color: #f3f4f7;
   color: #333;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   display: flex;
@@ -10,7 +10,18 @@ body {
   height: 100vh;
   margin: 0;
   text-align: center;
-  padding: 20px; /* Adiciona espaçamento nas bordas da página */
+  padding: 20px;
+  overflow: hidden; /* Remove a barra de rolagem */
+}
+
+/* Título */
+.title {
+  font-size: 36px;
+  color: #ff4d4d;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in-out;
 }
 
 /* Estilos do formulário */
@@ -20,16 +31,11 @@ form {
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 400px; /* Limita a largura máxima do formulário */
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-form h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #555;
+  animation: slideIn 1s ease-out; /* Animação de entrada */
 }
 
 /* Estilos dos inputs */
@@ -42,17 +48,17 @@ input[type="text"] {
   background-color: #fafafa;
   color: #333;
   text-align: center;
-  transition: border-color 0.3s ease; /* Animação suave na borda */
+  transition: border-color 0.3s ease;
 }
 
 input[type="text"]:focus {
-  border-color: #007BFF; /* Cor da borda ao focar */
+  border-color: #007BFF;
   outline: none;
 }
 
 /* Estilos dos botões */
 button {
-  background-color: #ff4d4d; /* Vermelho suave */
+  background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -60,11 +66,12 @@ button {
   cursor: pointer;
   margin-top: 20px;
   font-size: 16px;
-  transition: background-color 0.3s ease; /* Animação suave na cor de fundo */
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
 }
 
 button:hover {
-  background-color: #ff3333; /* Cor mais escura ao passar o mouse */
+  background-color: #ff3333;
 }
 
 /* Estilos do botão de admin */
@@ -73,7 +80,7 @@ button.admin-button {
   color: #333;
   border: 1px solid #333;
   padding: 5px 10px;
-  border-radius: 2px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
   margin-top: 20px;
@@ -83,18 +90,45 @@ button.admin-button:hover {
   background-color: #f0f0f0;
 }
 
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Estilos responsivos */
 @media (max-width: 600px) {
   body {
-    padding: 10px; /* Reduz o padding em dispositivos móveis */
+    padding: 10px;
   }
 
   form {
-    padding: 20px; /* Reduz o padding do formulário em dispositivos móveis */
+    padding: 20px;
   }
 
   button {
-    padding: 10px 15px; /* Reduz o padding do botão em dispositivos móveis */
+    padding: 10px 15px;
     font-size: 14px;
+  }
+
+  .title {
+    font-size: 28px;
   }
 }
