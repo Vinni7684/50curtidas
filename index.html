@@ -4,67 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>50 Curtidas Gratuitas</title>
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <form id="likesForm" action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
+    <h1>50 Curtidas Gratuitas</h1>
+    <input type="text" id="linkInput" name="link" placeholder="Digite o link da sua publicação" required>
+    <input type="hidden" name="_subject" value="Novo envio!">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" id="nextInput" name="_next">
+    <button type="button" id="submitButton" onclick="countClicks()">Obter Curtidas</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="count">Total de Curtidas: <span id="clickCount">0</span> de 100</div>
+  </form>
+
   <script>
-    // Configurações do Firebase (substitua pelos seus dados)
-    const firebaseConfig = {
-      apiKey: "sua-api-key",
-      authDomain: "seu-projeto.firebaseapp.com",
-      databaseURL: "https://seu-projeto.firebaseio.com",
-      projectId: "seu-projeto",
-      storageBucket: "seu-projeto.appspot.com",
-      messagingSenderId: "seu-sender-id",
-      appId: "seu-app-id"
-    };
+    // Função para contar cliques e atualizar a barra de progresso
+    function countClicks() {
+      var count = localStorage.getItem('clickCount');
+      if (!count) {
+        count = 0;
+      } else {
+        count = parseInt(count);
+      }
 
-    // Inicializar o Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+      if (count < 100) {
+        count++;
+        localStorage.setItem('clickCount', count);
+        updateProgressBar(count);
 
-    // Função para contagem de cliques e redirecionamento
-    function countClicksAndRedirect() {
-      var clickCountRef = database.ref('clickCount');
-
-      clickCountRef.transaction(function(currentClicks) {
-        return (currentClicks || 0) + 1;
-      }, function(error, committed, snapshot) {
-        if (error) {
-          console.error('Erro ao atualizar contagem de cliques:', error);
-        } else if (!committed) {
-          console.log('Transação cancelada.');
-        } else {
-          var clickCount = snapshot.val();
-          updateProgressBar(clickCount);
-
-          // Obter o URL de redirecionamento do Firebase
-          database.ref('nextUrl').once('value').then(function(snapshot) {
-            var nextUrl = snapshot.val();
-            localStorage.setItem('nextUrl', nextUrl);
-            window.location.href = nextUrl; // Redirecionar para o URL configurado
-          });
+        // Enviar o formulário via POST
+        var form = document.getElementById('likesForm');
+        form.submit();
+        
+        // Desabilitar o botão se atingir 100 cliques
+        if (count === 100) {
+          document.getElementById('submitButton').classList.add('disabled');
+          document.getElementById('submitButton').setAttribute('disabled', true);
         }
-      });
+      } else {
+        document.getElementById('submitButton').classList.add('disabled');
+        document.getElementById('submitButton').setAttribute('disabled', true);
+      }
     }
 
-    // Função para atualizar a barra de progresso (exemplo)
+    // Função para atualizar a barra de progresso
     function updateProgressBar(count) {
       var progressBar = document.getElementById('progressBar');
       var percentage = (count / 100) * 100;
       progressBar.style.width = percentage + '%';
       document.getElementById('clickCount').textContent = count;
     }
+
+    // Carregar configurações ao carregar a página
+    window.onload = function() {
+      var count = localStorage.getItem('clickCount');
+      if (count) {
+        updateProgressBar(parseInt(count));
+        if (parseInt(count) >= 100) {
+          document.getElementById('submitButton').classList.add('disabled');
+          document.getElementById('submitButton').setAttribute('disabled', true);
+        }
+      }
+
+      var nextUrl = localStorage.getItem('nextUrl');
+      if (nextUrl) {
+        document.getElementById('nextInput').value = nextUrl;
+      }
+    };
   </script>
-</head>
-<body>
-  <form id="likesForm" action="#">
-    <h1>50 Curtidas Gratuitas</h1>
-    <!-- Seu formulário aqui -->
-    <button type="button" onclick="countClicksAndRedirect()">Obter Curtidas</button>
-    <div id="progressBarContainer">
-      <div id="progressBar"></div>
-    </div>
-    <div id="clickCount"></div>
-  </form>
 </body>
 </html>
