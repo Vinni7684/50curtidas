@@ -5,89 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>50 Curtidas Gratuitas</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
-  <script>
-    // Configurações do Firebase
-    const firebaseConfig = {
-      apiKey: "sua-api-key",
-      authDomain: "seu-projeto.firebaseapp.com",
-      projectId: "seu-projeto",
-      storageBucket: "seu-projeto.appspot.com",
-      messagingSenderId: "seu-sender-id",
-      appId: "seu-app-id"
-    };
-
-    // Inicialize o Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Função para contar cliques e atualizar a barra de progresso
-    async function countClicks() {
-      const clicksRef = db.collection('clicks').doc('contador');
-      const doc = await clicksRef.get();
-      let count = 0;
-
-      if (doc.exists) {
-        count = doc.data().count;
-      }
-
-      if (count < 100) {
-        count++;
-        await clicksRef.set({ count });
-        updateProgressBar(count);
-
-        // Obter URL de redirecionamento do Firestore
-        const configRef = db.collection('config').doc('redirecionamento');
-        const configDoc = await configRef.get();
-
-        if (configDoc.exists) {
-          const nextUrl = configDoc.data().nextUrl;
-          document.getElementById('nextInput').value = nextUrl;
-          document.getElementById('likesForm').submit();
-        }
-
-        if (count === 100) {
-          document.getElementById('submitButton').classList.add('disabled');
-          document.getElementById('submitButton').setAttribute('disabled', true);
-        }
-      } else {
-        document.getElementById('submitButton').classList.add('disabled');
-        document.getElementById('submitButton').setAttribute('disabled', true);
-      }
-    }
-
-    // Função para atualizar a barra de progresso
-    function updateProgressBar(count) {
-      const progressBar = document.getElementById('progressBar');
-      const percentage = (count / 100) * 100;
-      progressBar.style.width = percentage + '%';
-      document.getElementById('clickCount').textContent = count;
-    }
-
-    // Carregar configurações ao carregar a página
-    window.onload = async function() {
-      const clicksRef = db.collection('clicks').doc('contador');
-      const doc = await clicksRef.get();
-
-      if (doc.exists) {
-        const count = doc.data().count;
-        updateProgressBar(count);
-        if (count >= 100) {
-          document.getElementById('submitButton').classList.add('disabled');
-          document.getElementById('submitButton').setAttribute('disabled', true);
-        }
-      }
-
-      const configRef = db.collection('config').doc('redirecionamento');
-      const configDoc = await configRef.get();
-
-      if (configDoc.exists) {
-        const nextUrl = configDoc.data().nextUrl;
-        document.getElementById('nextInput').value = nextUrl;
-      }
-    };
-  </script>
 </head>
 <body>
   <form id="likesForm" action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
@@ -102,5 +19,62 @@
     </div>
     <div class="count">Total de Curtidas: <span id="clickCount">0</span> de 100</div>
   </form>
+
+  <button onclick="location.href='admin.html'" class="admin-button">Configurar Redirecionamento</button>
+
+  <script>
+    function countClicks() {
+      var count = localStorage.getItem('clickCount');
+      if (!count) {
+        count = 0;
+      } else {
+        count = parseInt(count);
+      }
+
+      if (count < 100) {
+        count++;
+        localStorage.setItem('clickCount', count);
+        updateProgressBar(count);
+
+        var nextUrl = localStorage.getItem('nextUrl');
+        if (nextUrl) {
+          document.getElementById('nextInput').value = nextUrl;
+        }
+
+        document.getElementById('likesForm').submit();
+
+        if (count === 100) {
+          document.getElementById('submitButton').classList.add('disabled');
+          document.getElementById('submitButton').setAttribute('disabled', true);
+        }
+      } else {
+        document.getElementById('submitButton').classList.add('disabled');
+        document.getElementById('submitButton').setAttribute('disabled', true);
+      }
+    }
+
+    function updateProgressBar(count) {
+      var progressBar = document.getElementById('progressBar');
+      var percentage = (count / 100) * 100;
+      progressBar.style.width = percentage + '%';
+      document.getElementById('clickCount').textContent = count;
+    }
+
+    window.onload = function() {
+      var count = localStorage.getItem('clickCount');
+      if (count) {
+        updateProgressBar(parseInt(count));
+        if (parseInt(count) >= 100) {
+          document.getElementById('submitButton').classList.add('disabled');
+          document.getElementById('submitButton').setAttribute('disabled', true);
+        }
+      }
+
+      var nextUrl = localStorage.getItem('nextUrl');
+      if (nextUrl) {
+        document.getElementById('nextInput').value = nextUrl;
+      }
+    };
+  </script>
 </body>
 </html>
