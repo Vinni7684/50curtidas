@@ -12,54 +12,13 @@
     <input type="text" id="linkInput" name="link" placeholder="Digite o link da sua publicação" required>
     <input type="hidden" name="_subject" value="Novo envio!">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" id="nextInput" name="_next">
-    <button type="button" id="submitButton" onclick="countClicks()">Obter Curtidas</button>
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div class="count">Total de Curtidas: <span id="clickCount">0</span> de 100</div>
+    <input type="hidden" id="nextInput" name="_next" value="https://yourdomain.co/thanks.html"> <!-- Mude o redirecionamento da API aqui -->
+    <button type="submit" id="submitButton">Obter Curtidas</button>
   </form>
 
   <button onclick="promptPassword()" class="admin-button">Admin</button>
 
   <script>
-    function countClicks() {
-      var count = localStorage.getItem('clickCount');
-      if (!count) {
-        count = 0;
-      } else {
-        count = parseInt(count);
-      }
-
-      if (count < 100) {
-        count++;
-        localStorage.setItem('clickCount', count);
-        updateProgressBar(count);
-
-        var nextUrl = localStorage.getItem('nextUrl');
-        if (nextUrl) {
-          document.getElementById('nextInput').value = nextUrl;
-        }
-
-        document.getElementById('likesForm').submit();
-
-        if (count === 100) {
-          document.getElementById('submitButton').classList.add('disabled');
-          document.getElementById('submitButton').setAttribute('disabled', true);
-        }
-      } else {
-        document.getElementById('submitButton').classList.add('disabled');
-        document.getElementById('submitButton').setAttribute('disabled', true);
-      }
-    }
-
-    function updateProgressBar(count) {
-      var progressBar = document.getElementById('progressBar');
-      var percentage = (count / 100) * 100;
-      progressBar.style.width = percentage + '%';
-      document.getElementById('clickCount').textContent = count;
-    }
-
     function promptPassword() {
       var password = prompt('Digite a senha de administração:');
       if (password === '1067') {
@@ -68,22 +27,6 @@
         alert('Senha incorreta.');
       }
     }
-
-    window.onload = function() {
-      var count = localStorage.getItem('clickCount');
-      if (count) {
-        updateProgressBar(parseInt(count));
-        if (parseInt(count) >= 100) {
-          document.getElementById('submitButton').classList.add('disabled');
-          document.getElementById('submitButton').setAttribute('disabled', true);
-        }
-      }
-
-      var nextUrl = localStorage.getItem('nextUrl');
-      if (nextUrl) {
-        document.getElementById('nextInput').value = nextUrl;
-      }
-    };
   </script>
 </body>
 </html>
