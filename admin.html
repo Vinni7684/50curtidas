@@ -3,38 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Configurar Redirecionamento</title>
+  <title>Admin - Métricas</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Configurar Redirecionamento</h1>
-  <form id="adminForm">
-    <label for="nextUrl">URL de Redirecionamento:</label>
-    <input type="text" id="nextUrl" placeholder="Digite a URL de redirecionamento">
-    <button type="button" onclick="saveNextUrl()">Salvar</button>
-  </form>
-  
-  <form id="resetCountForm">
-    <button type="button" onclick="resetCount()">Resetar Contagem de Cliques</button>
-  </form>
+  <h1>Métricas</h1>
+  <div>
+    <p>Total de cliques no botão: <span id="clickCount">0</span></p>
+    <p>Total de visitas na página: <span id="visitCount">0</span></p>
+  </div>
 
   <script>
-    function saveNextUrl() {
-      var nextUrl = document.getElementById('nextUrl').value;
-      localStorage.setItem('nextUrl', nextUrl);
-      alert('URL de redirecionamento salva!');
+    // Função para atualizar métricas
+    function updateMetrics() {
+      var clickCount = localStorage.getItem('clickCount') || 0;
+      var visitCount = localStorage.getItem('visitCount') || 0;
+
+      document.getElementById('clickCount').textContent = clickCount;
+      document.getElementById('visitCount').textContent = visitCount;
     }
 
-    function resetCount() {
-      localStorage.setItem('clickCount', 0);
-      alert('Contagem de cliques resetada!');
-    }
-
+    // Incrementar visitas na página
     window.onload = function() {
-      var nextUrl = localStorage.getItem('nextUrl');
-      if (nextUrl) {
-        document.getElementById('nextUrl').value = nextUrl;
-      }
+      var visitCount = localStorage.getItem('visitCount') || 0;
+      visitCount = parseInt(visitCount) + 1;
+      localStorage.setItem('visitCount', visitCount);
+      updateMetrics();
     };
   </script>
 </body>
