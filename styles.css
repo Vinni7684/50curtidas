@@ -1,7 +1,8 @@
+/* Estilos globais */
 body {
-  background-color: white;
-  color: black;
-  font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* Cor de fundo mais suave */
+  color: #333;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,49 +10,72 @@ body {
   height: 100vh;
   margin: 0;
   text-align: center;
+  padding: 20px; /* Adiciona espaçamento nas bordas da página */
 }
 
+/* Estilos do formulário */
 form {
-  background-color: #f9f9f9;
-  padding: 20px;
+  background-color: #fff;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-  width: 300px;
-  margin: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px; /* Limita a largura máxima do formulário */
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center;
 }
 
+form h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Estilos dos inputs */
 input[type="text"] {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 10px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: #fafafa;
   color: #333;
-  text-align: center; /* Centraliza o texto no input */
+  text-align: center;
+  transition: border-color 0.3s ease; /* Animação suave na borda */
 }
 
+input[type="text"]:focus {
+  border-color: #007BFF; /* Cor da borda ao focar */
+  outline: none;
+}
+
+/* Estilos dos botões */
 button {
-  background-color: red;
+  background-color: #ff4d4d; /* Vermelho suave */
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 20px;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Animação suave na cor de fundo */
 }
 
+button:hover {
+  background-color: #ff3333; /* Cor mais escura ao passar o mouse */
+}
+
+/* Estilos do botão de admin */
 button.admin-button {
   background-color: transparent;
-  color: black;
-  border: 1px solid black;
+  color: #333;
+  border: 1px solid #333;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 20px;
 }
 
@@ -59,13 +83,18 @@ button.admin-button:hover {
   background-color: #f0f0f0;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
+/* Estilos responsivos */
+@media (max-width: 600px) {
+  body {
+    padding: 10px; /* Reduz o padding em dispositivos móveis */
+  }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 16px;
+  form {
+    padding: 20px; /* Reduz o padding do formulário em dispositivos móveis */
+  }
+
+  button {
+    padding: 10px 15px; /* Reduz o padding do botão em dispositivos móveis */
+    font-size: 14px;
+  }
 }
