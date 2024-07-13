@@ -3,111 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configuração de Administração</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(255, 0, 0, 0.4);
-      width: 80%;
-      max-width: 400px;
-      text-align: center;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      border: 1px solid #ccc;
-    }
-
-    form:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 24px rgba(255, 0, 0, 0.6);
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-      font-size: 28px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: 2px solid #ccc;
-      border-radius: 25px;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      box-sizing: border-box;
-    }
-
-    input[type="text"]:focus {
-      border-color: #FF0000;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 25px;
-      background-color: #FF0000;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(255, 0, 0, 0.1);
-      transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-    }
-
-    button:hover {
-      background-color: #CC0000;
-      box-shadow: 0 6px 12px rgba(255, 0, 0, 0.15);
-      transform: scale(1.05);
-    }
-
-    button.disabled {
-      background-color: #ccc !important;
-      cursor: not-allowed;
-    }
-  </style>
+  <title>Admin - Configurar Redirecionamento</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <form>
-    <h1>Configuração de Administração</h1>
-  
-    <label for="redirectUrlInput">URL de Redirecionamento:</label>
-    <input type="text" id="redirectUrlInput" placeholder="Digite o URL de redirecionamento">
-    <button type="button" onclick="updateRedirectUrl()">Atualizar Redirecionamento</button>
-    
-    <script>
-      // Carregar configurações ao carregar a página
-      window.onload = function() {
-        var nextUrl = localStorage.getItem('nextUrl');
-        if (nextUrl) {
-          document.getElementById('redirectUrlInput').value = nextUrl;
-        }
-      };
-
-      // Função para atualizar o URL de redirecionamento
-      function updateRedirectUrl() {
-        var redirectUrl = document.getElementById('redirectUrlInput').value;
-        localStorage.setItem('nextUrl', redirectUrl);
-        alert('URL de redirecionamento atualizado para: ' + redirectUrl);
-      }
-    </script>
+  <h1>Configurar Redirecionamento</h1>
+  <form id="adminForm">
+    <label for="nextUrl">URL de Redirecionamento:</label>
+    <input type="text" id="nextUrl" placeholder="Digite a URL de redirecionamento">
+    <button type="button" onclick="saveNextUrl()">Salvar</button>
   </form>
+  
+  <form id="resetCountForm">
+    <button type="button" onclick="resetCount()">Resetar Contagem de Cliques</button>
+  </form>
+
+  <script>
+    function saveNextUrl() {
+      var nextUrl = document.getElementById('nextUrl').value;
+      localStorage.setItem('nextUrl', nextUrl);
+      alert('URL de redirecionamento salva!');
+    }
+
+    function resetCount() {
+      localStorage.setItem('clickCount', 0);
+      alert('Contagem de cliques resetada!');
+    }
+
+    window.onload = function() {
+      var nextUrl = localStorage.getItem('nextUrl');
+      if (nextUrl) {
+        document.getElementById('nextUrl').value = nextUrl;
+      }
+    };
+  </script>
 </body>
 </html>
