@@ -18,6 +18,9 @@ form {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
   width: 300px;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
 }
 
 input[type="text"] {
@@ -28,6 +31,7 @@ input[type="text"] {
   border-radius: 5px;
   background-color: #fff;
   color: #333;
+  text-align: center; /* Centraliza o texto no input */
 }
 
 button {
