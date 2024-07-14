@@ -14,17 +14,6 @@ body {
   overflow: hidden; /* Remove a barra de rolagem */
 }
 
-/* Título */
-.title {
-  font-size: 36px;
-  color: #000000; /* Cor preta */
-  font-weight: bold; /* Fonte mais grossa */
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-  animation: fadeIn 1s ease-in-out;
-}
-
 /* Estilos do formulário */
 form {
   background-color: #ffffff;
@@ -39,21 +28,33 @@ form {
   animation: slideIn 1s ease-out; /* Animação de entrada */
 }
 
+/* Título */
+.title {
+  font-size: 24px;
+  color: #000000; /* Cor preta */
+  font-weight: bold; /* Fonte mais grossa */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in-out;
+}
+
 /* Estilos dos inputs */
 input[type="text"] {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
   background-color: #fafafa;
   color: #333;
   text-align: center;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus {
-  border-color: #007BFF;
+  border-color: #ff0000; /* Cor vermelha ao focar */
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); /* Destaque ao focar */
   outline: none;
 }
 
@@ -67,12 +68,13 @@ button {
   cursor: pointer;
   margin-top: 20px;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
 }
 
 button:hover {
   background-color: #cc0000; /* Vermelho mais escuro ao passar o mouse */
+  transform: translateY(-2px); /* Levanta o botão ao passar o mouse */
 }
 
 /* Estilos do botão de admin */
@@ -130,6 +132,6 @@ button.admin-button:hover {
   }
 
   .title {
-    font-size: 28px;
+    font-size: 22px;
   }
 }
