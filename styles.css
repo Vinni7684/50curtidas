@@ -59,7 +59,7 @@ input[type="text"]:focus {
 
 /* Estilos dos botões */
 button {
-  background-color: #d9534f; /* Vermelho forte */
+  background-color: red; /* Vermelho forte */
   color: white;
   border: none;
   padding: 12px 20px;
