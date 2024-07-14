@@ -1,6 +1,6 @@
 /* Estilos globais */
 body {
-  background-color: #ffffff; /* Fundo branco */
+  background-color: #f5f5f5; /* Fundo cinza claro para contraste */
   color: #333;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   display: flex;
@@ -16,7 +16,7 @@ body {
 
 /* Título */
 .title {
-  font-size: 25px;
+  font-size: 36px;
   color: #000000; /* Cor preta */
   font-weight: bold; /* Fonte mais grossa */
   text-transform: uppercase;
@@ -27,12 +27,12 @@ body {
 
 /* Estilos do formulário */
 form {
-  background-color: #f8f9fa;
-  padding: 30px; /* Reduzido o padding nas laterais */
+  background-color: #ffffff;
+  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 350px;
+  width: 80%; /* Ajustado para ser mais estreito */
+  max-width: 350px; /* Reduzido o tamanho máximo */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +41,7 @@ form {
 
 /* Estilos dos inputs */
 input[type="text"] {
-  width: 70%;
+  width: 100%;
   padding: 12px;
   margin: 10px 0;
   border: 1px solid #ddd;
@@ -59,7 +59,7 @@ input[type="text"]:focus {
 
 /* Estilos dos botões */
 button {
-  background-color: red; /* Vermelho forte */
+  background-color: #ff0000; /* Vermelho forte */
   color: white;
   border: none;
   padding: 12px 20px;
@@ -72,7 +72,7 @@ button {
 }
 
 button:hover {
-  background-color: #c9302c;
+  background-color: #cc0000; /* Vermelho mais escuro ao passar o mouse */
 }
 
 /* Estilos do botão de admin */
