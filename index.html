@@ -1,32 +1,375 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>50 Curtidas Gratuitas</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTAS PREMIUM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(139, 0, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .discount-timer {
+            background-color: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .timer-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #ff9999;
+        }
+        
+        #countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff5555;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #ff4d94 0%, #ff1a75 100%);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
+        }
+        
+        .promo-banner h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #333;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(123, 0, 255, 0.4);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #444;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .product-description {
+            color: #ccc;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+        
+        .buy-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+        
+        .buy-button:hover {
+            background: linear-gradient(135deg, #20bd5c 0%, #0e7a63 100%);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .buy-button i {
+            margin-right: 8px;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+            border-top: 1px solid #333;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 1.8rem;
+            color: #5a5a5a;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1 class="title">50 CURTIDAS GRATUITAS</h1>
-  <form id="likesForm" action="https://formsubmit.co/vinniciuslopes12@gmail.com" method="POST">
-    <input type="text" id="linkInput" name="link" placeholder="Digite o link da sua publicação" required>
-    <input type="hidden" name="_subject" value="Novo envio!">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" id="nextInput" name="_next" value="https://yourdomain.co/thanks.html"> <!-- Mude o redirecionamento da API aqui -->
-    <button type="submit" id="submitButton">Obter Curtidas</button>
-  </form>
+    <div class="container">
+        <header>
+            <h1>CONTAS PREMIUM</h1>
+            <div class="discount-timer">
+                <div class="timer-title">DESCONTO ACABA EM:</div>
+                <div id="countdown">03:00:00</div>
+            </div>
+        </header>
+        
+        <section class="promo-banner">
+            <h2>PROMOÇÃO RELÂMPAGO!</h2>
+            <p>Todas as contas por apenas R$ 5,00 cada!</p>
+        </section>
+        
+        <section class="products-grid" id="products-container">
+            <!-- Produtos serão inseridos via JavaScript -->
+        </section>
+        
+        <div class="payment-methods">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fab fa-pix"></i>
+        </div>
+        
+        <footer>
+            <p>© 2023 Contas Premium - Todos os direitos reservados</p>
+            <p>Entre em contato: contato@contaspremium.com</p>
+        </footer>
+    </div>
+    
+    <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20em%20comprar%20uma%20conta%20premium" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-  <button onclick="promptPassword()" class="admin-button">Admin</button>
+    <script>
+        // Dados dos produtos
+        const products = [
+            {
+                id: 1,
+                name: "HBO Max",
+                description: "Acesso completo à plataforma HBO Max por 1 ano. Todos os planos disponíveis.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 2,
+                name: "Prime Video",
+                description: "Conta Amazon Prime Video premium com acesso a todos os filmes e séries.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 3,
+                name: "Disney+",
+                description: "Acesso à Disney+, Marvel, Star Wars, National Geographic e muito mais.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1620052581237-3d44bfd6a251?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 4,
+                name: "Netflix",
+                description: "Conta Netflix premium com 4 telas simultâneas e catálogo completo.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 5,
+                name: "Spotify",
+                description: "Conta Spotify Premium familiar ou individual. Sem anúncios, modo offline.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1611339555312-e607c8832c41?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 6,
+                name: "YouTube Premium",
+                description: "YouTube sem anúncios, modo offline e acesso ao YouTube Music.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            }
+        ];
 
-  <script>
-    function promptPassword() {
-      var password = prompt('Digite a senha de administração:');
-      if (password === '1067') {
-        location.href = 'admin.html';
-      } else {
-        alert('Senha incorreta.');
-      }
-    }
-  </script>
+        // Função para renderizar os produtos
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">
+                            <span class="original-price">R$ 49,90</span>
+                            <span class="current-price">R$ ${product.price}</span>
+                        </div>
+                        <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20na%20conta%20${encodeURIComponent(product.name)}" class="buy-button" target="_blank">
+                            <i class="fab fa-whatsapp"></i> COMPRAR AGORA
+                        </a>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+
+        // Temporizador de 3 horas
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            let timeInSeconds = 3 * 60 * 60; // 3 horas em segundos
+            
+            function updateCountdown() {
+                const hours = Math.floor(timeInSeconds / 3600);
+                const minutes = Math.floor((timeInSeconds % 3600) / 60);
+                const seconds = timeInSeconds % 60;
+                
+                countdownElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeInSeconds > 0) {
+                    timeInSeconds--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownElement.textContent = "PROMOÇÃO ENCERRADA!";
+                    countdownElement.style.color = "#ff0000";
+                }
+            }
+            
+            updateCountdown();
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            startCountdown();
+        });
+    </script>
 </body>
 </html>
