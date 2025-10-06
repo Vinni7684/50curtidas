@@ -19,6 +19,15 @@
             line-height: 1.6;
         }
         
+        .discount-banner {
+            background-color: #ff3333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
         .container {
             max-width: 100%;
             margin: 0 auto;
@@ -29,22 +38,31 @@
             text-align: center;
             margin-bottom: 20px;
             padding: 20px 15px;
-            background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+            background: #111;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(139, 0, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
         }
         
         h1 {
             font-size: 2.2rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-size: 1rem;
         }
         
         .discount-timer {
-            background-color: rgba(255, 0, 0, 0.2);
-            border: 1px solid #ff4444;
+            background-color: #1a1a1a;
+            border: 2px solid #ff3333;
             border-radius: 10px;
-            padding: 10px;
+            padding: 15px;
             margin: 15px 0;
         }
         
@@ -55,15 +73,456 @@
         }
         
         #countdown {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #ff5555;
+            letter-spacing: 2px;
         }
         
         .promo-banner {
-            background: linear-gradient(135deg, #ff4d94 0%, #ff1a75 100%);
+            background: #1a1a1a;
             border-radius: 10px;
             padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+        
+        .promo-banner h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #00cc66;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .product-card {
+            background: #111;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #333;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #333;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .product-description {
+            color: #aaa;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            min-height: 60px;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+        
+        .buy-button {
+            display: block;
+            width: 100%;
+            background: #25d366;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-button:hover {
+            background: #20bd5c;
+            transform: translateY(-2px);
+        }
+        
+        .buy-button i {
+            margin-right: 8px;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+        
+        .benefits {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px solid #333;
+        }
+        
+        .benefits h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .benefit-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #00cc66;
+        }
+        
+        .benefit-text {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+            border-top: 1px solid #333;
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 1.8rem;
+            color: #5a5a5a;
+        }
+        
+        .faq {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px solid #333;
+        }
+        
+        .faq h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .faq-answer {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .benefits-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="discount-banner">
+        ⚠️ PROMOÇÃO RELÂMPAGO - DESCONTO ACABA EM: <span id="countdown-top">03:00:00</span>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>CONTAS PREMIUM</h1>
+            <p class="subtitle">Acesso completo às melhores plataformas de streaming</p>
+            
+            <div class="discount-timer">
+                <div class="timer-title">OFERTA POR TEMPO LIMITADO</div>
+                <div id="countdown">03:00:00</div>
+            </div>
+        </header>
+        
+        <section class="promo-banner">
+            <h2>PROMOÇÃO EXCLUSIVA!</h2>
+            <p>Todas as contas por apenas R$ 5,00 cada! Preço único!</p>
+        </section>
+        
+        <section class="benefits">
+            <h2>POR QUE COMPRAR CONOSCO?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="benefit-text">Contas 100% seguras e verificadas</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="benefit-text">Entrega instantânea após pagamento</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="benefit-text">Suporte 24/7 para dúvidas</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="benefit-text">Garantia de 30 dias</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="products-grid" id="products-container">
+            <!-- Produtos serão inseridos via JavaScript -->
+        </section>
+        
+        <section class="faq">
+            <h2>PERGUNTAS FREQUENTES</h2>
+            <div class="faq-item">
+                <div class="faq-question">Como recebo a conta após a compra?</div>
+                <div class="faq-answer">Após a confirmação do pagamento, você receberá os dados de acesso por WhatsApp em até 5 minutos.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Por quanto tempo tenho acesso?</div>
+                <div class="faq-answer">Todas as contas têm validade de 1 ano a partir da data de ativação.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Posso usar em quantos dispositivos?</div>
+                <div class="faq-answer">Cada conta permite uso em até 4 dispositivos simultaneamente.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">E se a conta parar de funcionar?</div>
+                <div class="faq-answer">Oferecemos garantia de 30 dias. Se houver qualquer problema, faremos a substituição.</div>
+            </div>
+        </section>
+        
+        <div class="payment-methods">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fab fa-pix"></i>
+        </div>
+        
+        <footer>
+            <p>© 2023 Contas Premium - Todos os direitos reservados</p>
+            <p>Entre em contato: contato@contaspremium.com</p>
+        </footer>
+    </div>
+    
+    <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20em%20comprar%20uma%20conta%20premium" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Dados dos produtos
+        const products = [
+            {
+                id: 1,
+                name: "HBO Max",
+                description: "Acesso completo à plataforma HBO Max por 1 ano. Todos os planos disponíveis.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 2,
+                name: "Prime Video",
+                description: "Conta Amazon Prime Video premium com acesso a todos os filmes e séries.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 3,
+                name: "Disney+",
+                description: "Acesso à Disney+, Marvel, Star Wars, National Geographic e muito mais.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1620052581237-3d44bfd6a251?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 4,
+                name: "Netflix",
+                description: "Conta Netflix premium com 4 telas simultâneas e catálogo completo.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 5,
+                name: "Spotify",
+                description: "Conta Spotify Premium familiar ou individual. Sem anúncios, modo offline.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1611339555312-e607c8832c41?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 6,
+                name: "YouTube Premium",
+                description: "YouTube sem anúncios, modo offline e acesso ao YouTube Music.",
+                price: "5,00",
+                imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            }
+        ];
+
+        // Função para renderizar os produtos
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">
+                            <span class="original-price">R$ 49,90</span>
+                            <span class="current-price">R$ ${product.price}</span>
+                        </div>
+                        <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20na%20conta%20${encodeURIComponent(product.name)}" class="buy-button" target="_blank">
+                            <i class="fab fa-whatsapp"></i> COMPRAR AGORA
+                        </a>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+
+        // Temporizador de 3 horas
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const countdownTopElement = document.getElementById('countdown-top');
+            let timeInSeconds = 3 * 60 * 60; // 3 horas em segundos
+            
+            function updateCountdown() {
+                const hours = Math.floor(timeInSeconds / 3600);
+                const minutes = Math.floor((timeInSeconds % 3600) / 60);
+                const seconds = timeInSeconds % 60;
+                
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                countdownElement.textContent = timeString;
+                countdownTopElement.textContent = timeString;
+                
+                if (timeInSeconds > 0) {
+                    timeInSeconds--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownElement.textContent = "PROMOÇÃO ENCERRADA!";
+                    countdownElement.style.color = "#ff0000";
+                    countdownTopElement.textContent = "PROMOÇÃO ENCERRADA!";
+                }
+            }
+            
+            updateCountdown();
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            startCountdown();
+        });
+    </script>
+</body>
+</html>            padding: 15px;
             text-align: center;
             margin-bottom: 25px;
             box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
