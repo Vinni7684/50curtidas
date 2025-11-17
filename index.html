@@ -247,7 +247,7 @@
         
         @media (max-width: 576px) {
             .preview {
-                padding: 20px 15px;
+                padding: 15px 12px;
                 min-height: 400px;
             }
         }
@@ -256,30 +256,42 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 2px solid #e2e8f0;
+            position: relative;
         }
         
         .company-name {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
-            flex: 1;
             text-align: center;
+            flex: 1;
         }
         
         @media (max-width: 576px) {
             .company-name {
-                font-size: 22px;
+                font-size: 18px;
+                margin: 0;
             }
         }
         
         .logo-container {
-            width: 100px;
-            height: 80px;
+            width: 70px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        @media (max-width: 576px) {
+            .logo-container {
+                width: 50px;
+                height: 40px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
         }
         
         .logo-preview {
@@ -291,32 +303,34 @@
         .budget-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 15px 0;
             table-layout: fixed;
         }
         
         .budget-table th {
             color: white;
-            padding: 12px;
+            padding: 10px 8px;
             text-align: left;
             border: 1px solid #ddd;
+            font-size: 14px;
         }
         
         .budget-table td {
-            padding: 12px;
+            padding: 8px 6px;
             border: 1px solid #ddd;
             word-wrap: break-word;
+            font-size: 13px;
         }
         
         @media (max-width: 576px) {
             .budget-table th, 
             .budget-table td {
-                padding: 8px 6px;
-                font-size: 13px;
+                padding: 6px 4px;
+                font-size: 11px;
             }
             
             .budget-table {
-                font-size: 13px;
+                font-size: 11px;
             }
         }
         
@@ -327,7 +341,7 @@
         .total {
             text-align: right;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             margin-top: 15px;
             padding-top: 15px;
             border-top: 2px solid #e2e8f0;
@@ -335,25 +349,26 @@
         
         @media (max-width: 576px) {
             .total {
-                font-size: 16px;
-                margin-top: 10px;
-                padding-top: 10px;
+                font-size: 14px;
+                margin-top: 12px;
+                padding-top: 12px;
             }
         }
         
         .technician-info {
-            margin-top: 30px;
+            margin-top: 25px;
             padding-top: 15px;
             border-top: 2px solid #e2e8f0;
         }
         
         .technician-info p {
             margin-bottom: 5px;
+            font-size: 14px;
         }
         
         @media (max-width: 576px) {
             .technician-info p {
-                font-size: 14px;
+                font-size: 12px;
             }
         }
         
@@ -496,26 +511,45 @@
         }
         
         .client-info {
-            font-size: 16px;
+            font-size: 15px;
         }
         
         @media (max-width: 576px) {
             .client-info {
-                font-size: 14px;
+                font-size: 12px;
+                margin-bottom: 10px;
             }
             
             .preview {
-                font-size: 14px;
+                font-size: 12px;
             }
             
             .company-header {
-                flex-direction: column;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                min-height: 40px;
+            }
+            
+            .company-header:has(.logo-container:empty) .company-name {
+                width: 100%;
                 text-align: center;
             }
             
-            .logo-container {
-                margin-bottom: 10px;
-                order: -1;
+            #previewNotes p {
+                font-size: 12px;
+                margin: 8px 0;
+            }
+        }
+        
+        .empty-logo-space {
+            width: 70px;
+            height: 50px;
+        }
+        
+        @media (max-width: 576px) {
+            .empty-logo-space {
+                width: 50px;
+                height: 40px;
             }
         }
     </style>
@@ -648,7 +682,7 @@
                             <!-- Logo será inserida aqui -->
                         </div>
                         <div class="company-name" id="previewBudgetTitleDisplay">Título do Orçamento</div>
-                        <div class="logo-container">
+                        <div class="empty-logo-space">
                             <!-- Espaço reservado para alinhamento -->
                         </div>
                     </div>
