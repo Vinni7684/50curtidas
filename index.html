@@ -236,11 +236,14 @@
             min-height: 500px;
             background: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         @media (max-width: 576px) {
             .preview {
-                padding: 15px;
+                padding: 20px 15px;
                 min-height: 400px;
             }
         }
@@ -260,7 +263,7 @@
         
         @media (max-width: 576px) {
             .company-name {
-                font-size: 22px;
+                font-size: 24px;
             }
         }
         
@@ -268,6 +271,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            table-layout: fixed;
         }
         
         .budget-table th {
@@ -280,12 +284,17 @@
         .budget-table td {
             padding: 12px;
             border: 1px solid #ddd;
+            word-wrap: break-word;
         }
         
         @media (max-width: 576px) {
             .budget-table th, 
             .budget-table td {
-                padding: 8px;
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            .budget-table {
                 font-size: 14px;
             }
         }
@@ -306,7 +315,7 @@
         @media (max-width: 576px) {
             .total {
                 font-size: 16px;
-            margin-top: 10px;
+                margin-top: 10px;
                 padding-top: 10px;
             }
         }
@@ -458,6 +467,12 @@
             font-size: 14px;
             color: #22543d;
         }
+        
+        .pdf-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -568,44 +583,46 @@
         <div class="preview-section">
             <h2>Prévia do Orçamento</h2>
             
-            <div class="preview" id="pdfPreview">
-                <div class="company-header">
-                    <div class="company-name" id="previewBudgetTitleDisplay">Título do Orçamento</div>
-                </div>
-                
-                <div class="client-info">
-                    <div><strong>Cliente:</strong> <span id="previewClientName">Nome do Cliente</span></div>
-                    <div id="previewClientAddressContainer"><strong>Endereço:</strong> <span id="previewClientAddress">Endereço do Cliente</span></div>
-                </div>
-                
-                <table class="budget-table" id="previewTable">
-                    <thead>
-                        <tr>
-                            <th>Serviço</th>
-                            <th>Valor unitário</th>
-                            <th>Valor total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewServices">
-                        <!-- Serviços serão adicionados aqui dinamicamente -->
-                        <tr>
-                            <td>Descrição do serviço</td>
-                            <td>R$ 0,00</td>
-                            <td>R$ 0,00</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <div class="total">
-                    Total: R$ <span id="previewTotal">0,00</span>
-                </div>
-                
-                <div id="previewNotes">
-                    <p><strong>Observações:</strong> <span id="previewNotesText">Observações adicionais sobre o orçamento.</span></p>
-                </div>
-                
-                <div class="technician-info" id="previewTechnicianInfo">
-                    <!-- Informações do técnico serão adicionadas aqui dinamicamente -->
+            <div class="pdf-container">
+                <div class="preview" id="pdfPreview">
+                    <div class="company-header">
+                        <div class="company-name" id="previewBudgetTitleDisplay">Título do Orçamento</div>
+                    </div>
+                    
+                    <div class="client-info">
+                        <div><strong>Cliente:</strong> <span id="previewClientName">Nome do Cliente</span></div>
+                        <div id="previewClientAddressContainer"><strong>Endereço:</strong> <span id="previewClientAddress">Endereço do Cliente</span></div>
+                    </div>
+                    
+                    <table class="budget-table" id="previewTable">
+                        <thead>
+                            <tr>
+                                <th>Serviço</th>
+                                <th>Valor unitário</th>
+                                <th>Valor total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewServices">
+                            <!-- Serviços serão adicionados aqui dinamicamente -->
+                            <tr>
+                                <td>Descrição do serviço</td>
+                                <td>R$ 0,00</td>
+                                <td>R$ 0,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="total">
+                        Total: R$ <span id="previewTotal">0,00</span>
+                    </div>
+                    
+                    <div id="previewNotes">
+                        <p><strong>Observações:</strong> <span id="previewNotesText">Observações adicionais sobre o orçamento.</span></p>
+                    </div>
+                    
+                    <div class="technician-info" id="previewTechnicianInfo">
+                        <!-- Informações do técnico serão adicionadas aqui dinamicamente -->
+                    </div>
                 </div>
             </div>
             
@@ -947,19 +964,17 @@
                     logging: false,
                     backgroundColor: '#ffffff',
                     width: pdfPreview.scrollWidth,
-                    height: pdfPreview.scrollHeight,
-                    windowWidth: pdfPreview.scrollWidth,
-                    windowHeight: pdfPreview.scrollHeight
+                    height: pdfPreview.scrollHeight
                 });
                 
                 const imgData = canvas.toDataURL('image/png', 1.0); // Máxima qualidade
-                const imgWidth = pdfWidth - 40; // Deixar margens
+                const imgWidth = pdfWidth - 20; // Margens reduzidas para ocupar mais espaço
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
                 // Centralizar verticalmente
                 const y = (pdfHeight - imgHeight) / 2;
                 
-                pdf.addImage(imgData, 'PNG', 20, y, imgWidth, imgHeight);
+                pdf.addImage(imgData, 'PNG', 10, y, imgWidth, imgHeight);
                 
                 // Salvar o PDF
                 pdf.save('orcamento-premium-budget-' + (clientName.value || 'cliente') + '.pdf');
