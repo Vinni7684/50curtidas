@@ -168,6 +168,10 @@
                 gap: 10px;
                 padding: 12px;
             }
+            
+            .service-row:first-child .btn-remove {
+                display: none;
+            }
         }
         
         .btn {
@@ -249,7 +253,9 @@
         }
         
         .company-header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #e2e8f0;
@@ -258,13 +264,28 @@
         .company-name {
             font-size: 28px;
             font-weight: bold;
-            margin-bottom: 10px;
+            flex: 1;
+            text-align: center;
         }
         
         @media (max-width: 576px) {
             .company-name {
-                font-size: 24px;
+                font-size: 22px;
             }
+        }
+        
+        .logo-container {
+            width: 100px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-preview {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         
         .budget-table {
@@ -290,12 +311,12 @@
         @media (max-width: 576px) {
             .budget-table th, 
             .budget-table td {
-                padding: 10px 8px;
-                font-size: 14px;
+                padding: 8px 6px;
+                font-size: 13px;
             }
             
             .budget-table {
-                font-size: 14px;
+                font-size: 13px;
             }
         }
         
@@ -375,12 +396,12 @@
             border-color: var(--primary-color);
         }
         
-        .cover-preview {
+        .cover-preview, .logo-preview-container {
             margin-top: 15px;
             text-align: center;
         }
         
-        .cover-preview img {
+        .cover-preview img, .logo-preview-container img {
             max-width: 100%;
             max-height: 200px;
             border: 1px solid #e2e8f0;
@@ -473,6 +494,30 @@
             max-width: 800px;
             margin: 0 auto;
         }
+        
+        .client-info {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 576px) {
+            .client-info {
+                font-size: 14px;
+            }
+            
+            .preview {
+                font-size: 14px;
+            }
+            
+            .company-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-bottom: 10px;
+                order: -1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -493,6 +538,19 @@
                 <div class="error-message" id="coverError">Adicione a capa feita por Budget para continuar</div>
                 <div class="cover-preview" id="coverPreview">
                     <!-- Preview da capa será mostrado aqui -->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="clientLogo">Logo do Cliente <span class="optional-badge">(opcional)</span></label>
+                <div class="file-input-container">
+                    <input type="file" id="clientLogo" accept="image/*">
+                    <div class="file-input-label">
+                        <span id="logoLabelText">Adicione a logo do cliente (aparecerá no PDF)</span>
+                    </div>
+                </div>
+                <div class="logo-preview-container" id="logoPreview">
+                    <!-- Preview da logo será mostrado aqui -->
                 </div>
             </div>
             
@@ -543,7 +601,7 @@
                         <input type="number" class="service-price" placeholder="0,00" step="0.01">
                     </div>
                     <div>
-                        <button class="btn btn-remove remove-service">Remover</button>
+                        <!-- Primeiro serviço não tem botão de remover -->
                     </div>
                 </div>
             </div>
@@ -586,7 +644,13 @@
             <div class="pdf-container">
                 <div class="preview" id="pdfPreview">
                     <div class="company-header">
+                        <div class="logo-container" id="previewLogoContainer">
+                            <!-- Logo será inserida aqui -->
+                        </div>
                         <div class="company-name" id="previewBudgetTitleDisplay">Título do Orçamento</div>
+                        <div class="logo-container">
+                            <!-- Espaço reservado para alinhamento -->
+                        </div>
                     </div>
                     
                     <div class="client-info">
@@ -641,12 +705,15 @@
             const clientAddress = document.getElementById('clientAddress');
             const budgetTitle = document.getElementById('budgetTitle');
             const coverPdf = document.getElementById('coverPdf');
+            const clientLogo = document.getElementById('clientLogo');
             const colorPicker = document.getElementById('colorPicker');
             const notes = document.getElementById('notes');
             const servicesContainer = document.getElementById('servicesContainer');
             const addServiceBtn = document.getElementById('addService');
             const fileLabelText = document.getElementById('fileLabelText');
+            const logoLabelText = document.getElementById('logoLabelText');
             const coverPreview = document.getElementById('coverPreview');
+            const logoPreview = document.getElementById('logoPreview');
             const coverError = document.getElementById('coverError');
             
             // Campos do técnico
@@ -665,6 +732,7 @@
             const previewNotesText = document.getElementById('previewNotesText');
             const previewTable = document.getElementById('previewTable');
             const previewTechnicianInfo = document.getElementById('previewTechnicianInfo');
+            const previewLogoContainer = document.getElementById('previewLogoContainer');
             
             // Botões
             const updatePreviewBtn = document.getElementById('updatePreview');
@@ -673,6 +741,7 @@
             // Contador de serviços
             let serviceCount = 1;
             let coverPdfFile = null;
+            let clientLogoFile = null;
             
             // Gerenciar upload da capa
             coverPdf.addEventListener('change', function(e) {
@@ -719,6 +788,43 @@
                     coverError.style.display = 'block';
                 }
             });
+            
+            // Gerenciar upload da logo
+            clientLogo.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    clientLogoFile = file;
+                    logoLabelText.textContent = file.name;
+                    
+                    // Mostrar preview da logo
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        logoPreview.innerHTML = '';
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        logoPreview.appendChild(img);
+                        
+                        // Atualizar pré-visualização
+                        updatePreviewLogo(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    clientLogoFile = null;
+                    logoLabelText.textContent = 'Adicione a logo do cliente (aparecerá no PDF)';
+                    logoPreview.innerHTML = '';
+                    previewLogoContainer.innerHTML = '';
+                }
+            });
+            
+            function updatePreviewLogo(logoData) {
+                previewLogoContainer.innerHTML = '';
+                if (logoData) {
+                    const img = document.createElement('img');
+                    img.src = logoData;
+                    img.className = 'logo-preview';
+                    previewLogoContainer.appendChild(img);
+                }
+            }
             
             // Gerenciar seletor de cores
             colorPicker.addEventListener('input', function() {
@@ -783,7 +889,7 @@
                 });
             });
             
-            // Adicionar evento para remover serviço ao primeiro elemento
+            // Adicionar evento para remover serviço aos elementos existentes
             document.querySelectorAll('.remove-service').forEach(btn => {
                 btn.addEventListener('click', function() {
                     if (serviceCount > 1) {
