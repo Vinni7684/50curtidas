@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTAS PREMIUM</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Editor Premium-Budget</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        :root {
+            --primary-color: #4a90d6;
+            --secondary-color: #ff7e30;
+            --error-color: #e53e3e;
+            --success-color: #48bb78;
+            --light-color: #f7fafc;
+            --dark-color: #2d3748;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,821 +24,963 @@
         }
         
         body {
-            background-color: #000;
-            color: #fff;
-            line-height: 1.6;
-        }
-        
-        .discount-banner {
-            background-color: #ff3333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #6ba8e0 0%, #4a90d6 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
         
         .container {
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 20px 15px;
-            background: #111;
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                gap: 15px;
+            }
+        }
+        
+        .editor-section, .preview-section {
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
-            border: 1px solid #333;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .editor-section, .preview-section {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .editor-section, .preview-section {
+                padding: 15px;
+                border-radius: 10px;
+            }
         }
         
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
-        .subtitle {
-            color: #ccc;
-            margin-bottom: 15px;
-            font-size: 1rem;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
         }
         
-        .discount-timer {
-            background-color: #1a1a1a;
-            border: 2px solid #ff3333;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.8rem;
+            }
         }
         
-        .timer-title {
-            font-size: 1rem;
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        @media (max-width: 576px) {
+            h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 576px) {
+            .form-group {
+                margin-bottom: 15px;
+            }
+        }
+        
+        label {
+            display: block;
             margin-bottom: 8px;
-            color: #ff9999;
+            font-weight: 600;
+            color: #4a5568;
         }
         
-        #countdown {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ff5555;
-            letter-spacing: 2px;
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
         }
         
-        .promo-banner {
-            background: #1a1a1a;
-            border-radius: 10px;
+        @media (max-width: 576px) {
+            input, textarea, select {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 214, 0.1);
+        }
+        
+        .service-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
             padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            align-items: end;
+        }
+        
+        @media (max-width: 576px) {
+            .service-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #3a80c6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 576px) {
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+        
+        .btn-download {
+            background: var(--success-color);
+        }
+        
+        .btn-download:hover {
+            background: #3fa76c;
+        }
+        
+        .btn-add {
+            background: var(--secondary-color);
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 0;
+        }
+        
+        .btn-add:hover {
+            background: #e86d1f;
+        }
+        
+        .btn-remove {
+            background: var(--error-color);
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 0;
+            white-space: nowrap;
+        }
+        
+        .btn-remove:hover {
+            background: #c53030;
+        }
+        
+        .preview {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 25px;
+            min-height: 500px;
+            background: #f7fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        @media (max-width: 576px) {
+            .preview {
+                padding: 15px;
+                min-height: 400px;
+            }
+        }
+        
+        .company-header {
             text-align: center;
             margin-bottom: 25px;
-            border: 1px solid #333;
-        }
-        
-        .promo-banner h2 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-            color: #00cc66;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .product-card {
-            background: #111;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #333;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-bottom: 1px solid #333;
-        }
-        
-        .product-info {
-            padding: 15px;
-        }
-        
-        .product-name {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        
-        .product-description {
-            color: #aaa;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            min-height: 60px;
-        }
-        
-        .product-price {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        
-        .current-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #00ff88;
-        }
-        
-        .buy-button {
-            display: block;
-            width: 100%;
-            background: #25d366;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .buy-button:hover {
-            background: #20bd5c;
-            transform: translateY(-2px);
-        }
-        
-        .buy-button i {
-            margin-right: 8px;
-        }
-        
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-        
-        .benefits {
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 30px 0;
-            border: 1px solid #333;
-        }
-        
-        .benefits h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 15px;
-        }
-        
-        .benefit-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #00cc66;
-        }
-        
-        .benefit-text {
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #777;
-            border-top: 1px solid #333;
-        }
-        
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0;
-            font-size: 1.8rem;
-            color: #5a5a5a;
-        }
-        
-        .faq {
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 30px 0;
-            border: 1px solid #333;
-        }
-        
-        .faq h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-        
-        .faq-item {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
             padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
         }
         
-        .faq-question {
+        .company-name {
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 8px;
-            color: #fff;
+            margin-bottom: 10px;
         }
         
-        .faq-answer {
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                max-width: 700px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .benefits-grid {
-                grid-template-columns: repeat(4, 1fr);
+        @media (max-width: 576px) {
+            .company-name {
+                font-size: 22px;
             }
         }
         
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1000px;
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .budget-table th {
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .budget-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        @media (max-width: 576px) {
+            .budget-table th, 
+            .budget-table td {
+                padding: 8px;
+                font-size: 14px;
             }
-            
-            .products-grid {
-                grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .budget-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        @media (max-width: 576px) {
+            .total {
+                font-size: 16px;
+            margin-top: 10px;
+                padding-top: 10px;
             }
+        }
+        
+        .technician-info {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .technician-info p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 576px) {
+            .technician-info p {
+                font-size: 14px;
+            }
+        }
+        
+        .service-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-container input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input-label:hover {
+            background: #edf2f7;
+            border-color: var(--primary-color);
+        }
+        
+        .cover-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .cover-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .color-picker-label {
+            font-weight: 600;
+            color: #4a5568;
+            white-space: nowrap;
+        }
+        
+        .color-picker {
+            width: 50px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .optional-badge {
+            font-size: 12px;
+            color: #718096;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .color-presets {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-preset {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .color-preset:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-preset.active {
+            border-color: #2d3748;
+        }
+        
+        .technician-fields {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .technician-fields h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .quality-notice {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #0050b3;
         }
     </style>
 </head>
 <body>
-    <div class="discount-banner">
-        ⚠️ PROMOÇÃO RELÂMPAGO - DESCONTO ACABA EM: <span id="countdown-top">03:00:00</span>
-    </div>
+    <h1>Editor Premium-Budget</h1>
     
     <div class="container">
-        <header>
-            <h1>CONTAS PREMIUM</h1>
-            <p class="subtitle">Acesso completo às melhores plataformas de streaming</p>
+        <div class="editor-section">
+            <h2>Personalize seu Orçamento</h2>
             
-            <div class="discount-timer">
-                <div class="timer-title">OFERTA POR TEMPO LIMITADO</div>
-                <div id="countdown">03:00:00</div>
-            </div>
-        </header>
-        
-        <section class="promo-banner">
-            <h2>PROMOÇÃO EXCLUSIVA!</h2>
-            <p>Todas as contas por apenas R$ 5,00 cada! Preço único!</p>
-        </section>
-        
-        <section class="benefits">
-            <h2>POR QUE COMPRAR CONOSCO?</h2>
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-shield-alt"></i>
+            <div class="form-group">
+                <label for="coverPdf">Capa do Orçamento</label>
+                <div class="file-input-container">
+                    <input type="file" id="coverPdf" accept=".pdf" required>
+                    <div class="file-input-label">
+                        <span id="fileLabelText">Coloque aqui o seu PDF premium feito por Budget</span>
                     </div>
-                    <div class="benefit-text">Contas 100% seguras e verificadas</div>
                 </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <div class="benefit-text">Entrega instantânea após pagamento</div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <div class="benefit-text">Suporte 24/7 para dúvidas</div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <div class="benefit-text">Garantia de 30 dias</div>
+                <div class="error-message" id="coverError">Adicione a capa feita por Budget para continuar</div>
+                <div class="cover-preview" id="coverPreview">
+                    <!-- Preview da capa será mostrado aqui -->
                 </div>
             </div>
-        </section>
-        
-        <section class="products-grid" id="products-container">
-            <!-- Produtos serão inseridos via JavaScript -->
-        </section>
-        
-        <section class="faq">
-            <h2>PERGUNTAS FREQUENTES</h2>
-            <div class="faq-item">
-                <div class="faq-question">Como recebo a conta após a compra?</div>
-                <div class="faq-answer">Após a confirmação do pagamento, você receberá os dados de acesso por WhatsApp em até 5 minutos.</div>
+            
+            <div class="form-group">
+                <label for="clientName">Nome do Cliente</label>
+                <input type="text" id="clientName" placeholder="Digite o nome do cliente">
             </div>
-            <div class="faq-item">
-                <div class="faq-question">Por quanto tempo tenho acesso?</div>
-                <div class="faq-answer">Todas as contas têm validade de 1 ano a partir da data de ativação.</div>
+            
+            <div class="form-group">
+                <label for="clientAddress">Endereço do Cliente <span class="optional-badge">(opcional)</span></label>
+                <input type="text" id="clientAddress" placeholder="Digite o endereço do cliente">
             </div>
-            <div class="faq-item">
-                <div class="faq-question">Posso usar em quantos dispositivos?</div>
-                <div class="faq-answer">Cada conta permite uso em até 4 dispositivos simultaneamente.</div>
+            
+            <div class="form-group">
+                <label for="budgetTitle">Título do Orçamento</label>
+                <input type="text" id="budgetTitle" placeholder="Ex: Instalação Elétrica Residencial">
             </div>
-            <div class="faq-item">
-                <div class="faq-question">E se a conta parar de funcionar?</div>
-                <div class="faq-answer">Oferecemos garantia de 30 dias. Se houver qualquer problema, faremos a substituição.</div>
+            
+            <div class="form-group">
+                <div class="color-picker-container">
+                    <span class="color-picker-label">Cor do Orçamento:</span>
+                    <input type="color" id="colorPicker" class="color-picker" value="#4a90d6">
+                    <div class="color-presets">
+                        <div class="color-preset" style="background-color: #4a90d6;" data-color="#4a90d6"></div>
+                        <div class="color-preset" style="background-color: #48bb78;" data-color="#48bb78"></div>
+                        <div class="color-preset" style="background-color: #ed8936;" data-color="#ed8936"></div>
+                        <div class="color-preset" style="background-color: #9f7aea;" data-color="#9f7aea"></div>
+                        <div class="color-preset" style="background-color: #e53e3e;" data-color="#e53e3e"></div>
+                        <div class="color-preset" style="background-color: #2d3748;" data-color="#2d3748"></div>
+                    </div>
+                </div>
             </div>
-        </section>
-        
-        <div class="payment-methods">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-paypal"></i>
-            <i class="fab fa-pix"></i>
+            
+            <h3>Serviços</h3>
+            <div class="service-controls">
+                <button class="btn btn-add" id="addService">+ Adicionar Serviço</button>
+            </div>
+            
+            <div id="servicesContainer">
+                <!-- Serviços serão adicionados aqui dinamicamente -->
+                <div class="service-row">
+                    <div>
+                        <label>Descrição do Serviço</label>
+                        <input type="text" class="service-desc" placeholder="Descrição do serviço">
+                    </div>
+                    <div>
+                        <label>Valor (R$)</label>
+                        <input type="number" class="service-price" placeholder="0,00" step="0.01">
+                    </div>
+                    <div>
+                        <button class="btn btn-remove remove-service">Remover</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Observações</label>
+                <textarea id="notes" placeholder="Observações adicionais"></textarea>
+            </div>
+            
+            <div class="technician-fields">
+                <h3>Informações do Técnico <span class="optional-badge">(opcionais)</span></h3>
+                
+                <div class="form-group">
+                    <label for="technicianName">Nome do Técnico</label>
+                    <input type="text" id="technicianName" placeholder="Ex: João da Silva (CREA-SP 123.456-7)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="technicianCNPJ">CNPJ</label>
+                    <input type="text" id="technicianCNPJ" placeholder="Ex: 12.345.678/0001-99">
+                </div>
+                
+                <div class="form-group">
+                    <label for="technicianContact">Contato</label>
+                    <input type="text" id="technicianContact" placeholder="Ex: (11) 98765-4321 | email@exemplo.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="technicianAddress">Endereço</label>
+                    <input type="text" id="technicianAddress" placeholder="Ex: Rua das Flores, 123, Jardim Elétrico - São Paulo, SP">
+                </div>
+            </div>
+            
+            <button class="btn" id="updatePreview">Atualizar Visualização</button>
         </div>
         
-        <footer>
-            <p>© 2023 Contas Premium - Todos os direitos reservados</p>
-            <p>Entre em contato: contato@contaspremium.com</p>
-        </footer>
+        <div class="preview-section">
+            <h2>Prévia do Orçamento</h2>
+            
+            <div class="preview" id="pdfPreview">
+                <div class="company-header">
+                    <div class="company-name" id="previewBudgetTitleDisplay">Título do Orçamento</div>
+                </div>
+                
+                <div class="client-info">
+                    <div><strong>Cliente:</strong> <span id="previewClientName">Nome do Cliente</span></div>
+                    <div id="previewClientAddressContainer"><strong>Endereço:</strong> <span id="previewClientAddress">Endereço do Cliente</span></div>
+                </div>
+                
+                <table class="budget-table" id="previewTable">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Valor unitário</th>
+                            <th>Valor total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewServices">
+                        <!-- Serviços serão adicionados aqui dinamicamente -->
+                        <tr>
+                            <td>Descrição do serviço</td>
+                            <td>R$ 0,00</td>
+                            <td>R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="total">
+                    Total: R$ <span id="previewTotal">0,00</span>
+                </div>
+                
+                <div id="previewNotes">
+                    <p><strong>Observações:</strong> <span id="previewNotesText">Observações adicionais sobre o orçamento.</span></p>
+                </div>
+                
+                <div class="technician-info" id="previewTechnicianInfo">
+                    <!-- Informações do técnico serão adicionadas aqui dinamicamente -->
+                </div>
+            </div>
+            
+            <div class="quality-notice">
+                <strong>Qualidade do PDF:</strong> O PDF será gerado com alta qualidade e o conteúdo centralizado.
+            </div>
+            
+            <button class="btn btn-download" id="downloadPdf">Baixar PDF com Capa</button>
+        </div>
     </div>
-    
-    <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20em%20comprar%20uma%20conta%20premium" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
 
     <script>
-        // Dados dos produtos
-        const products = [
-            {
-                id: 1,
-                name: "HBO Max",
-                description: "Acesso completo à plataforma HBO Max por 1 ano. Todos os planos disponíveis.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 2,
-                name: "Prime Video",
-                description: "Conta Amazon Prime Video premium com acesso a todos os filmes e séries.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 3,
-                name: "Disney+",
-                description: "Acesso à Disney+, Marvel, Star Wars, National Geographic e muito mais.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1620052581237-3d44bfd6a251?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 4,
-                name: "Netflix",
-                description: "Conta Netflix premium com 4 telas simultâneas e catálogo completo.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 5,
-                name: "Spotify",
-                description: "Conta Spotify Premium familiar ou individual. Sem anúncios, modo offline.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1611339555312-e607c8832c41?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 6,
-                name: "YouTube Premium",
-                description: "YouTube sem anúncios, modo offline e acesso ao YouTube Music.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            }
-        ];
-
-        // Função para renderizar os produtos
-        function renderProducts() {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do formulário
+            const clientName = document.getElementById('clientName');
+            const clientAddress = document.getElementById('clientAddress');
+            const budgetTitle = document.getElementById('budgetTitle');
+            const coverPdf = document.getElementById('coverPdf');
+            const colorPicker = document.getElementById('colorPicker');
+            const notes = document.getElementById('notes');
+            const servicesContainer = document.getElementById('servicesContainer');
+            const addServiceBtn = document.getElementById('addService');
+            const fileLabelText = document.getElementById('fileLabelText');
+            const coverPreview = document.getElementById('coverPreview');
+            const coverError = document.getElementById('coverError');
             
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                
-                productCard.innerHTML = `
-                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="product-price">
-                            <span class="original-price">R$ 49,90</span>
-                            <span class="current-price">R$ ${product.price}</span>
-                        </div>
-                        <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20na%20conta%20${encodeURIComponent(product.name)}" class="buy-button" target="_blank">
-                            <i class="fab fa-whatsapp"></i> COMPRAR AGORA
-                        </a>
+            // Campos do técnico
+            const technicianName = document.getElementById('technicianName');
+            const technicianCNPJ = document.getElementById('technicianCNPJ');
+            const technicianContact = document.getElementById('technicianContact');
+            const technicianAddress = document.getElementById('technicianAddress');
+            
+            // Elementos de pré-visualização
+            const previewClientName = document.getElementById('previewClientName');
+            const previewClientAddress = document.getElementById('previewClientAddress');
+            const previewClientAddressContainer = document.getElementById('previewClientAddressContainer');
+            const previewBudgetTitleDisplay = document.getElementById('previewBudgetTitleDisplay');
+            const previewServices = document.getElementById('previewServices');
+            const previewTotal = document.getElementById('previewTotal');
+            const previewNotesText = document.getElementById('previewNotesText');
+            const previewTable = document.getElementById('previewTable');
+            const previewTechnicianInfo = document.getElementById('previewTechnicianInfo');
+            
+            // Botões
+            const updatePreviewBtn = document.getElementById('updatePreview');
+            const downloadPdfBtn = document.getElementById('downloadPdf');
+            
+            // Contador de serviços
+            let serviceCount = 1;
+            let coverPdfFile = null;
+            
+            // Gerenciar upload da capa
+            coverPdf.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    coverPdfFile = file;
+                    fileLabelText.textContent = file.name;
+                    coverError.style.display = 'none';
+                    
+                    // Mostrar preview da primeira página do PDF
+                    const fileReader = new FileReader();
+                    fileReader.onload = function() {
+                        const typedarray = new Uint8Array(this.result);
+                        
+                        // Carregar o PDF e extrair a primeira página como imagem
+                        pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
+                            pdf.getPage(1).then(function(page) {
+                                const viewport = page.getViewport({ scale: 0.5 });
+                                const canvas = document.createElement('canvas');
+                                const context = canvas.getContext('2d');
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
+                                
+                                const renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
+                                
+                                page.render(renderContext).promise.then(function() {
+                                    coverPreview.innerHTML = '';
+                                    const img = document.createElement('img');
+                                    img.src = canvas.toDataURL();
+                                    coverPreview.appendChild(img);
+                                });
+                            });
+                        });
+                    };
+                    fileReader.readAsArrayBuffer(file);
+                } else {
+                    coverPdfFile = null;
+                    fileLabelText.textContent = 'Coloque aqui o seu PDF premium feito por Budget';
+                    coverPreview.innerHTML = '';
+                    coverError.style.display = 'block';
+                }
+            });
+            
+            // Gerenciar seletor de cores
+            colorPicker.addEventListener('input', function() {
+                updatePreview();
+                updateActivePreset(colorPicker.value);
+            });
+            
+            // Configurar presets de cores
+            const colorPresets = document.querySelectorAll('.color-preset');
+            colorPresets.forEach(preset => {
+                preset.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    colorPicker.value = color;
+                    updatePreview();
+                    updateActivePreset(color);
+                });
+            });
+            
+            function updateActivePreset(color) {
+                colorPresets.forEach(preset => {
+                    if (preset.getAttribute('data-color') === color) {
+                        preset.classList.add('active');
+                    } else {
+                        preset.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Adicionar serviço
+            addServiceBtn.addEventListener('click', function() {
+                serviceCount++;
+                const newServiceRow = document.createElement('div');
+                newServiceRow.className = 'service-row';
+                newServiceRow.innerHTML = `
+                    <div>
+                        <label>Descrição do Serviço</label>
+                        <input type="text" class="service-desc" placeholder="Descrição do serviço">
+                    </div>
+                    <div>
+                        <label>Valor (R$)</label>
+                        <input type="number" class="service-price" placeholder="0,00" step="0.01">
+                    </div>
+                    <div>
+                        <button class="btn btn-remove remove-service">Remover</button>
                     </div>
                 `;
+                servicesContainer.appendChild(newServiceRow);
                 
-                container.appendChild(productCard);
+                // Adicionar evento para remover serviço
+                newServiceRow.querySelector('.remove-service').addEventListener('click', function() {
+                    if (serviceCount > 1) {
+                        servicesContainer.removeChild(newServiceRow);
+                        serviceCount--;
+                        updatePreview();
+                    }
+                });
+                
+                // Atualizar automaticamente ao digitar
+                const inputs = newServiceRow.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updatePreview);
+                });
             });
-        }
-
-        // Temporizador de 3 horas
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            const countdownTopElement = document.getElementById('countdown-top');
-            let timeInSeconds = 3 * 60 * 60; // 3 horas em segundos
             
-            function updateCountdown() {
-                const hours = Math.floor(timeInSeconds / 3600);
-                const minutes = Math.floor((timeInSeconds % 3600) / 60);
-                const seconds = timeInSeconds % 60;
+            // Adicionar evento para remover serviço ao primeiro elemento
+            document.querySelectorAll('.remove-service').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (serviceCount > 1) {
+                        const serviceRow = this.closest('.service-row');
+                        servicesContainer.removeChild(serviceRow);
+                        serviceCount--;
+                        updatePreview();
+                    }
+                });
+            });
+            
+            // Atualizar pré-visualização
+            updatePreviewBtn.addEventListener('click', updatePreview);
+            
+            // Atualizar automaticamente ao digitar
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+            
+            function updatePreview() {
+                // Atualizar informações do cliente
+                previewClientName.textContent = clientName.value || 'Nome do Cliente';
+                previewClientAddress.textContent = clientAddress.value || 'Endereço do Cliente';
                 
-                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                countdownElement.textContent = timeString;
-                countdownTopElement.textContent = timeString;
-                
-                if (timeInSeconds > 0) {
-                    timeInSeconds--;
-                    setTimeout(updateCountdown, 1000);
+                // Mostrar/ocultar endereço do cliente
+                if (clientAddress.value) {
+                    previewClientAddressContainer.style.display = 'block';
                 } else {
-                    countdownElement.textContent = "PROMOÇÃO ENCERRADA!";
-                    countdownElement.style.color = "#ff0000";
-                    countdownTopElement.textContent = "PROMOÇÃO ENCERRADA!";
+                    previewClientAddressContainer.style.display = 'none';
+                }
+                
+                previewBudgetTitleDisplay.textContent = budgetTitle.value || 'Título do Orçamento';
+                
+                // Atualizar cor do título e da tabela
+                const selectedColor = colorPicker.value;
+                previewBudgetTitleDisplay.style.color = selectedColor;
+                previewTable.style.borderColor = selectedColor;
+                const tableHeaders = previewTable.querySelectorAll('th');
+                tableHeaders.forEach(header => {
+                    header.style.backgroundColor = selectedColor;
+                });
+                
+                // Atualizar serviços
+                previewServices.innerHTML = '';
+                let total = 0;
+                
+                const serviceRows = document.querySelectorAll('.service-row');
+                serviceRows.forEach(row => {
+                    const desc = row.querySelector('.service-desc').value || 'Descrição do serviço';
+                    const price = parseFloat(row.querySelector('.service-price').value) || 0;
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${desc}</td>
+                        <td>R$ ${formatCurrency(price)}</td>
+                        <td>R$ ${formatCurrency(price)}</td>
+                    `;
+                    previewServices.appendChild(tr);
+                    
+                    total += price;
+                });
+                
+                // Atualizar total
+                previewTotal.textContent = formatCurrency(total);
+                
+                // Atualizar observações
+                previewNotesText.textContent = notes.value || 'Observações adicionais sobre o orçamento.';
+                
+                // Atualizar informações do técnico
+                previewTechnicianInfo.innerHTML = '';
+                
+                if (technicianName.value) {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>Nome do Técnico:</strong> ${technicianName.value}`;
+                    previewTechnicianInfo.appendChild(p);
+                }
+                
+                if (technicianCNPJ.value) {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>CNPJ:</strong> ${technicianCNPJ.value}`;
+                    previewTechnicianInfo.appendChild(p);
+                }
+                
+                if (technicianContact.value) {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>Contato:</strong> ${technicianContact.value}`;
+                    previewTechnicianInfo.appendChild(p);
+                }
+                
+                if (technicianAddress.value) {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>Endereço:</strong> ${technicianAddress.value}`;
+                    previewTechnicianInfo.appendChild(p);
+                }
+                
+                // Mostrar/ocultar seção do técnico
+                if (previewTechnicianInfo.children.length > 0) {
+                    previewTechnicianInfo.style.display = 'block';
+                } else {
+                    previewTechnicianInfo.style.display = 'none';
                 }
             }
             
-            updateCountdown();
-        }
-
-        // Inicializar a página
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProducts();
-            startCountdown();
+            function formatCurrency(value) {
+                return value.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+            
+            // Gerar PDF com capa
+            downloadPdfBtn.addEventListener('click', async function() {
+                // Verificar se a capa foi fornecida
+                if (!coverPdfFile) {
+                    coverError.style.display = 'block';
+                    coverError.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+                
+                const { jsPDF } = window.jspdf;
+                
+                // Criar PDF principal
+                const pdf = new jsPDF();
+                
+                // Adicionar capa
+                try {
+                    // Ler o arquivo PDF da capa
+                    const coverArrayBuffer = await readFileAsArrayBuffer(coverPdfFile);
+                    
+                    // Adicionar a capa ao PDF
+                    const coverPdfDoc = await pdfjsLib.getDocument(coverArrayBuffer).promise;
+                    const totalPages = coverPdfDoc.numPages;
+                    
+                    // Adicionar todas as páginas da capa
+                    for (let i = 1; i <= totalPages; i++) {
+                        const page = await coverPdfDoc.getPage(i);
+                        const viewport = page.getViewport({ scale: 1 });
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        await page.render({
+                            canvasContext: context,
+                            viewport: viewport
+                        }).promise;
+                        
+                        const imgData = canvas.toDataURL('image/jpeg', 0.9); // Melhor qualidade
+                        
+                        // Adicionar página ao PDF
+                        if (i > 1) {
+                            pdf.addPage();
+                        }
+                        
+                        pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+                    }
+                } catch (error) {
+                    console.error('Erro ao processar capa:', error);
+                    alert('Erro ao processar a capa. Verifique se o arquivo é um PDF válido.');
+                    return;
+                }
+                
+                // Adicionar página para o orçamento
+                pdf.addPage();
+                
+                // Adicionar conteúdo do orçamento ao PDF com melhor qualidade
+                const pdfPreview = document.getElementById('pdfPreview');
+                
+                // Calcular dimensões para centralizar
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                
+                const canvas = await html2canvas(pdfPreview, {
+                    scale: 3, // Aumentar a escala para melhor qualidade
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const imgData = canvas.toDataURL('image/png', 1.0); // Máxima qualidade
+                const imgWidth = pdfWidth - 40; // Deixar margens
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                // Centralizar verticalmente
+                const y = (pdfHeight - imgHeight) / 2;
+                
+                pdf.addImage(imgData, 'PNG', 20, y, imgWidth, imgHeight, undefined, 'FAST');
+                
+                // Salvar o PDF
+                pdf.save('orcamento-premium-budget-' + (clientName.value || 'cliente') + '.pdf');
+            });
+            
+            // Função auxiliar para ler arquivo como ArrayBuffer
+            function readFileAsArrayBuffer(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+            
+            // Inicializar a pré-visualização
+            updatePreview();
+            updateActivePreset(colorPicker.value);
         });
     </script>
-</body>
-</html>            padding: 15px;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
-        }
-        
-        .promo-banner h2 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .product-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #333;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(123, 0, 255, 0.4);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-bottom: 1px solid #444;
-        }
-        
-        .product-info {
-            padding: 15px;
-        }
-        
-        .product-name {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        
-        .product-description {
-            color: #ccc;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-        }
-        
-        .product-price {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        
-        .current-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #00ff88;
-        }
-        
-        .buy-button {
-            display: block;
-            width: 100%;
-            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-        }
-        
-        .buy-button:hover {
-            background: linear-gradient(135deg, #20bd5c 0%, #0e7a63 100%);
-            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        .buy-button i {
-            margin-right: 8px;
-        }
-        
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #777;
-            border-top: 1px solid #333;
-        }
-        
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0;
-            font-size: 1.8rem;
-            color: #5a5a5a;
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                max-width: 700px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1000px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>CONTAS PREMIUM</h1>
-            <div class="discount-timer">
-                <div class="timer-title">DESCONTO ACABA EM:</div>
-                <div id="countdown">03:00:00</div>
-            </div>
-        </header>
-        
-        <section class="promo-banner">
-            <h2>PROMOÇÃO RELÂMPAGO!</h2>
-            <p>Todas as contas por apenas R$ 5,00 cada!</p>
-        </section>
-        
-        <section class="products-grid" id="products-container">
-            <!-- Produtos serão inseridos via JavaScript -->
-        </section>
-        
-        <div class="payment-methods">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-paypal"></i>
-            <i class="fab fa-pix"></i>
-        </div>
-        
-        <footer>
-            <p>© 2023 Contas Premium - Todos os direitos reservados</p>
-            <p>Entre em contato: contato@contaspremium.com</p>
-        </footer>
-    </div>
     
-    <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20em%20comprar%20uma%20conta%20premium" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
+    <!-- PDF.js library for PDF processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script>
-        // Dados dos produtos
-        const products = [
-            {
-                id: 1,
-                name: "HBO Max",
-                description: "Acesso completo à plataforma HBO Max por 1 ano. Todos os planos disponíveis.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 2,
-                name: "Prime Video",
-                description: "Conta Amazon Prime Video premium com acesso a todos os filmes e séries.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 3,
-                name: "Disney+",
-                description: "Acesso à Disney+, Marvel, Star Wars, National Geographic e muito mais.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1620052581237-3d44bfd6a251?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 4,
-                name: "Netflix",
-                description: "Conta Netflix premium com 4 telas simultâneas e catálogo completo.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 5,
-                name: "Spotify",
-                description: "Conta Spotify Premium familiar ou individual. Sem anúncios, modo offline.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1611339555312-e607c8832c41?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 6,
-                name: "YouTube Premium",
-                description: "YouTube sem anúncios, modo offline e acesso ao YouTube Music.",
-                price: "5,00",
-                imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-            }
-        ];
-
-        // Função para renderizar os produtos
-        function renderProducts() {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
-            
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                
-                productCard.innerHTML = `
-                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="product-price">
-                            <span class="original-price">R$ 49,90</span>
-                            <span class="current-price">R$ ${product.price}</span>
-                        </div>
-                        <a href="https://wa.me/5564992875664?text=Olá,%20tenho%20interesse%20na%20conta%20${encodeURIComponent(product.name)}" class="buy-button" target="_blank">
-                            <i class="fab fa-whatsapp"></i> COMPRAR AGORA
-                        </a>
-                    </div>
-                `;
-                
-                container.appendChild(productCard);
-            });
-        }
-
-        // Temporizador de 3 horas
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            let timeInSeconds = 3 * 60 * 60; // 3 horas em segundos
-            
-            function updateCountdown() {
-                const hours = Math.floor(timeInSeconds / 3600);
-                const minutes = Math.floor((timeInSeconds % 3600) / 60);
-                const seconds = timeInSeconds % 60;
-                
-                countdownElement.textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (timeInSeconds > 0) {
-                    timeInSeconds--;
-                    setTimeout(updateCountdown, 1000);
-                } else {
-                    countdownElement.textContent = "PROMOÇÃO ENCERRADA!";
-                    countdownElement.style.color = "#ff0000";
-                }
-            }
-            
-            updateCountdown();
-        }
-
-        // Inicializar a página
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProducts();
-            startCountdown();
-        });
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
     </script>
 </body>
 </html>
